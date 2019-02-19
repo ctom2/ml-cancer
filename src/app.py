@@ -10,7 +10,6 @@ class App:
     # class constructor
     def __init__(self):
         self.get_data()
-        self.standardization()
         self.split_data()
         self.train_on_values()
 
@@ -28,13 +27,13 @@ class App:
     # splits data into two datasets, first part is intended for learning and second part is intended for validation
     # and choosing the best k-value used in following functions
     def split_data(self, training_size = 0.67):
-        training_length = math.ceil(len(self.st_data_array) * training_size)
+        training_length = math.ceil(len(self.data_array) * training_size)
         for i in range(training_length):
-            self.training_data_array.append(self.st_data_array[i])
+            self.training_data_array.append(self.data_array[i])
             self.training_results_array.append(self.results_array[i])
 
-        for i in range(len(self.st_data_array) - training_length):
-            self.validation_data_array.append(self.st_data_array[i + training_length])
+        for i in range(len(self.data_array) - training_length):
+            self.validation_data_array.append(self.data_array[i + training_length])
             self.validation_results_array.append(self.results_array[i + training_length])
 
         self.training_data_array = np.array(self.training_data_array)
@@ -43,31 +42,23 @@ class App:
         self.validation_results_array = np.array(self.validation_results_array)
 
     # finds the best k-value (gives the most precise results) from range [1,30]
-    def best_k(self):
+    def bek(self):
         accuracy = 0
         k = 1
 
-        for i in range(1, 31):
+        for i in range(1, 36):
             classifier = KNeighborsClassifier(n_neighbors = i)
             classifier.fit(self.training_data_array, self.training_results_array)
             if classifier.score(self.validation_data_array, self.validation_results_array) > accuracy:
                 accuracy = classifier.score(self.validation_data_array, self.validation_results_array)
                 k = i
+                print(k, accuracy)
 
         return k
 
-    # preforms standardization over the dataset
-    def standardization(self):
-        self.st_data_array = copy.deepcopy(self.data_array)
-        for i in range(10):
-            max_value = self.data_array[:,i].max()
-            min_value = self.data_array[:,i].min()
-            for j in range(len(self.data_array)):
-                self.st_data_array[j][i] = (self.data_array[j][i] - min_value) / (max_value - min_value)
-
     # initializes the classifier and fits the training data
     def train_on_values(self):
-        k = self.best_k()
+        k = self.bek()
         self.main_classifier = KNeighborsClassifier(n_neighbors = k)
         self.main_classifier.fit(self.training_data_array, self.training_results_array)
 
@@ -86,7 +77,6 @@ class App:
     # CLASS VARIABLES
     main_classifier = None      # used for training and predicting
     data_array = []             # used for storing the data from csv file and creating graphs
-    st_data_array = []          # standardized data
     results_array = []          # array with results from csv file (second column of the original file)
     training_data_array = []    # training data (first 67% of the original dataset) = first part
     training_results_array = []     # results of the training data 
