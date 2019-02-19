@@ -42,7 +42,7 @@ class App:
         self.validation_results_array = np.array(self.validation_results_array)
 
     # finds the best k-value (gives the most precise results) from range [1,30]
-    def bek(self):
+    def best_k(self):
         accuracy = 0
         k = 1
 
@@ -58,7 +58,7 @@ class App:
 
     # initializes the classifier and fits the training data
     def train_on_values(self):
-        k = self.bek()
+        k = self.best_k()
         self.main_classifier = KNeighborsClassifier(n_neighbors = k)
         self.main_classifier.fit(self.training_data_array, self.training_results_array)
 
