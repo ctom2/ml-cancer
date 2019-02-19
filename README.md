@@ -4,7 +4,7 @@
 
 Machine learning project based on Breast Cancer Wisconsin (Diagnostic) Data Set from UCI Machine Learning Repository
 
-The main purpose of the program is to predict breast cancer based on features computed from a digitised image of a fine needle aspirate (FNA) of a breast mass. For the prediction the program uses the k-nearest neighbours algorithm (k-NN) and and data from the UCI Machine Learning Repository, specifically Breast Cancer Wisconsin (Diagnostic) Data Set.
+The main purpose of the program is to predict breast cancer based on features computed from a digitised image of a fine needle aspirate (FNA) of a breast mass. For the prediction the program uses the k-nearest neighbours algorithm (k-NN) and data from the dataset mentioned above.
 
 ## Usage
 ### Packages
