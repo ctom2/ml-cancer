@@ -22,8 +22,6 @@ The whole application is consists of five files:
 `python3 main.py`
 
 ### Sample run
-![](/images/screenshot1.png?raw=true "Sample of the first tab")
-![](/images/screenshot2.png?raw=true "Sample of the second tab")
 
 
 ## Credits
