@@ -22,7 +22,8 @@ The whole application is consists of five files:
 `python3 main.py`
 
 ### Sample run
-
+![](/images/screenshot1.png?raw=true "Sample of the first tab")
+![](/images/screenshot2.png?raw=true "Sample of the second tab")
 
 ## Credits
 [UCI Machine Learning Repository: Breast Cancer Wisconsin (Diagnostic) Data Set](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic))
