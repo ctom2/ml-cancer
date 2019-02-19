@@ -1,4 +1,4 @@
-# Diagnosing breast tumor using the k-nearest neighbors algorithm
+# Diagnosing breast tumor using the k-nearest neighbours algorithm
 
 ## Overview
 
