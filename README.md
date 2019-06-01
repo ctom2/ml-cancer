@@ -27,6 +27,9 @@ The whole application is consists of five files:
 ![](/images/screenshot1.png?raw=true "Sample of the first tab")
 ![](/images/screenshot2.png?raw=true "Sample of the second tab")
 
+## ⚠️ Future work
+Applying different machine learning algorithms and comparing the precision on this particular dataset.
+
 ## Credits
 [UCI Machine Learning Repository: Breast Cancer Wisconsin (Diagnostic) Data Set](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic))
 
