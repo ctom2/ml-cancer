@@ -1,6 +1,6 @@
 import numpy as np
 import math
-from knn import *
+from classifiers import Classifiers
 import random
 import copy
 import setter
@@ -20,7 +20,18 @@ class App:
 
         self.get_data(setter.dataset)
         self.split_data()
-        self.train_on_data(setter.algo)
+        self.train_on_data()
+
+        setter.pick_algo()
+
+        if setter.algo == 'kNN':
+            self.main_classifier = self.classifiers.knn_classifier
+        elif setter.algo == 'SVC':
+            self.main_classifier = self.classifiers.svc_classifier
+        elif setter.algo == 'GaussianNB':
+            self.main_classifier = self.classifiers.gauss_classifier
+        elif setter.algo == 'RandomForest':
+            self.main_classifier = self.classifiers.forest_classifier
 
     # reads data from dataset, saves the result values and deletes first two columns
     def get_data(self, dataset):
@@ -50,11 +61,17 @@ class App:
         self.validation_data_array = np.array(self.validation_data_array)
         self.validation_results_array = np.array(self.validation_results_array)
 
-    def train_on_data(self, algo):
-        if algo == 'kNN':
-            knn = kNN(self.training_data_array, self.training_results_array, self.validation_data_array, self.validation_results_array)
-            knn.train_on_values()
-            self.main_classifier = knn.main_classifier
+    def train_on_data(self):
+        self.classifiers = Classifiers(self.training_data_array, self.training_results_array, self.validation_data_array, self.validation_results_array)
+        self.classifiers.train_on_values_knn()
+        self.classifiers.train_on_values_svc()
+        self.classifiers.train_on_values_gauss()
+        self.classifiers.train_on_values_forest()
+        print('--------')
+        print('kNN\naccuracy score =', self.classifiers.knn_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
+        print('SVC\naccuracy score =', self.classifiers.svc_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
+        print('GaussianNB\naccuracy score =', self.classifiers.gauss_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
+        print('RandomForest\naccuracy score =', self.classifiers.forest_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
 
     # predicts the result of entered data
     def predict(self, entries):
