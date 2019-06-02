@@ -6,7 +6,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import math
 
-# result of clicking the 'Plot' button
+# Result of clicking the 'Plot' button.
 def clicked(x_axis, y_axis, app):
     x = app.data_columns.index(x_axis) # finds the index (right column) based on selected value
     y = app.data_columns.index(y_axis) 
@@ -15,7 +15,8 @@ def clicked(x_axis, y_axis, app):
     y_values_M = []
     x_values_B = []
     y_values_B = []
-    # inserts the coordinates of the data into the right arrays 
+
+    # Inserts the coordinates of the data into the right arrays.
     for i in range(math.ceil(len(app.data_array) * 0.67)):
         if app.training_results_array[i] == 'M':
             x_values_M.append(app.data_array[i][x])
@@ -24,7 +25,7 @@ def clicked(x_axis, y_axis, app):
             x_values_B.append(app.data_array[i][x])
             y_values_B.append(app.data_array[i][y])
 
-    # creating the plot
+    # Creating the plot.
     plt.scatter(x_values_M, y_values_M, color = '#FF0000', label = 'malignant')
     plt.scatter(x_values_B, y_values_B, color = '#17D190', label = 'benign')
 
@@ -33,7 +34,7 @@ def clicked(x_axis, y_axis, app):
     plt.legend(loc = 1)
     plt.show()
 
-# sets the second tab, creates needed labels, option menus and button
+# Sets the second tab, creates needed labels, option menus and button.
 def set_second_tab(tab2, app):
     data = ['radius', 'texture', 'perimeter', 'area', 'smoothness', 'compactness', 
             'concavity', 'concave points', 'symetry', 'fractal dimension']

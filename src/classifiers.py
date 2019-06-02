@@ -3,14 +3,17 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 
+# Class contains methods for initializing the classifiers and training them on training data.
+# For algorithm kNN is implemented function for picking the best k value.
 class Classifiers:
+    # Constructor passes data into arrays.
     def __init__(self, training_data_array, training_results_array, validation_data_array, validation_results_array):
             self.training_data_array = training_data_array
             self.training_results_array = training_results_array
             self.validation_data_array = validation_data_array
             self.validation_results_array = validation_results_array
 
-    # finds the best k-value (gives the most precise results) from range [1,30] for kNN
+    # Finds the best k-value (gives the most precise results) from range [1,36] for kNN.
     def best_k(self):
         accuracy = 0
         k = 1
