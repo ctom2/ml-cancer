@@ -1,4 +1,4 @@
-# Diagnosing breast tumour using the k-nearest neighbours algorithm
+# Diagnosing breast cancer using machine learning
 
 ## Overview
 
