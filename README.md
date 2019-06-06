@@ -1,6 +1,8 @@
-# Diagnosing breast tumour using the k-nearest neighbours algorithm
+# Diagnosing breast tumour using machine learning algorithms
 
 ## Overview
+
+*I used this project to gain experience in Python and try out different machine learning algorithms on popular dataset.*
 
 Machine learning project based on Breast Cancer Wisconsin (Diagnostic) Data Set from UCI Machine Learning Repository.
 
