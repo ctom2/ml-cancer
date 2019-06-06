@@ -1,4 +1,4 @@
-# Diagnosing breast tumour using machine learning algorithms
+# Diagnosing breast cancer using machine learning algorithms
 
 ## Overview
 
