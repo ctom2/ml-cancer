@@ -1,52 +1,28 @@
-from classifiers import Classifiers
+from knn import kNN
 from data_operator import *
 import random
-import setter
 
 # Class App contains all functions needed for the learning based on the values from csv file and calculating the predictions.
 class App:
     # Class constructor
-    def __init__(self, setter):
+    def __init__(self):
         # Definition of names of the parameters that are used for computation. The names are later
         # used in initialization of the user interface.
         self.data_columns = ['radius', 'texture', 'perimeter', 'area', 'smoothness', 'compactness', 
                              'concavity', 'concave points', 'symetry', 'fractal dimension']
 
         # Reads data and formats it into array that is required for training and making predictions.
-        self.data_array, self.results_array = get_data(setter.dataset)
-        self.training_data_array, self.training_results_array, self.validation_data_array, self.validation_results_array = split_data(self.data_array, self.results_array)
+        # Later the arrays are devided into two parts, one for training and second one for validating.
+        self.data, self.results = get_data('../breast_cancer_dataset.csv')
+        self.training_data, self.training_results, self.validation_data, self.validation_results = split_data(self.data, self.results)
 
-        # Trains every classifier on the datasets and prints the precision score of each classifier.
-        # Based on this information the user can pick one of the classifiers for the application.
-        self.train_on_data()
+        # Normalization of the dataset and saving the means and standard deviation values for later
+        self.training_data, self.means, self.stdevs = normalize_training(self.training_data)
+        self.validation_data = normalize(self.validation_data, self.means, self.stdevs)
 
-        # Using the Setter class method user chooses which classifier he/she wants to use.
-        setter.pick_algo()
-
-        # "Switch" for setting the main classifier based on the user's decision. This classifier is
-        # later used for making predictions.
-        if setter.algo == 'kNN':
-            self.main_classifier = self.classifiers.knn_classifier
-        elif setter.algo == 'SVC':
-            self.main_classifier = self.classifiers.svc_classifier
-        elif setter.algo == 'GaussianNB':
-            self.main_classifier = self.classifiers.gauss_classifier
-        elif setter.algo == 'RandomForest':
-            self.main_classifier = self.classifiers.forest_classifier
-
-    # Trains on data passed by the previous methods and initializes the classifiers. Then it produces
-    # scores based on validation datasets.
-    def train_on_data(self):
-        self.classifiers = Classifiers(self.training_data_array, self.training_results_array, self.validation_data_array, self.validation_results_array)
-        self.classifiers.train_on_values_knn()
-        self.classifiers.train_on_values_svc()
-        self.classifiers.train_on_values_gauss()
-        self.classifiers.train_on_values_forest()
-        print('--------')
-        print('kNN\naccuracy score =', self.classifiers.knn_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
-        print('SVC\naccuracy score =', self.classifiers.svc_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
-        print('GaussianNB\naccuracy score =', self.classifiers.gauss_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
-        print('RandomForest\naccuracy score =', self.classifiers.forest_classifier.score(self.validation_data_array, self.validation_results_array), '\n--------')
+        # Creates instance of the kNN class that operates with the classifier.
+        self.knn = kNN(self.training_data, self.training_results, self.validation_data, self.validation_results)
+        self.knn.train_on_values()
 
     # Predicts the result of entered data.
     def predict(self, entries):
@@ -59,4 +35,6 @@ class App:
         data = data.reshape(1, -1)
         data = data.astype(np.float64)
 
-        return self.main_classifier.predict(data)
+        data = normalize(data, self.means, self.stdevs)
+
+        return self.knn.predict(data)
