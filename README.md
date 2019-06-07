@@ -1,8 +1,8 @@
-# Diagnosing breast cancer using machine learning
+# Diagnosing breast cancer using machine learning algorithms
 
 ## Overview
 
-*The application was created mainly for me getting familiar with Python and its libraries for machine learning.*
+*I used this project to gain experience in Python and try out different machine learning algorithms on popular dataset.*
 
 Machine learning project based on Breast Cancer Wisconsin (Diagnostic) Data Set from UCI Machine Learning Repository.
 

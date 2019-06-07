@@ -2,12 +2,12 @@ from app import *
 from tab1 import *
 from tab2 import *
 
-# defines the window properties
+# Defines the window properties.
 def set_window(window, title, size):
     window.title(title)
     window.geometry(size)
 
-# creates the tabs
+# Creates the tabs.
 def set_tabs(tab_control):
     tab1 = ttk.Frame(tab_control)
     tab2 = ttk.Frame(tab_control)
@@ -16,7 +16,7 @@ def set_tabs(tab_control):
     
     return tab1, tab2
 
-# initializes the interface by creating the main window and the two lists
+# Initializes the interface by creating the main window and the two lists
 def initialize_interface(app):
     window = Tk()
     tab_control = ttk.Notebook(window)

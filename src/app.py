@@ -1,77 +1,32 @@
-import numpy as np
-import math
-from sklearn.neighbors import KNeighborsClassifier
+from knn import kNN
+from data_operator import *
 import random
-import copy
 
-# Class App contains all functions needed for the learning based on the values from csv file and calculating the predictions
-
+# Class App contains all functions needed for the learning based on the values from csv file and calculating the predictions.
 class App:
-    # class constructor
+    # Class constructor
     def __init__(self):
-        self.training_data_array = []    # training data (first 67% of the original dataset) = first part
-        self.training_results_array = []     # results of the training data
-        self.validation_data_array = []      # validation data (remaining 33% of the original dataset) = second part
-        self.validation_results_array = []   # results of the validation data
-
+        # Definition of names of the parameters that are used for computation. The names are later
+        # used in initialization of the user interface.
         self.data_columns = ['radius', 'texture', 'perimeter', 'area', 'smoothness', 'compactness', 
-                    'concavity', 'concave points', 'symetry', 'fractal dimension']
+                             'concavity', 'concave points', 'symetry', 'fractal dimension']
 
-        self.get_data()
-        self.split_data()
-        self.train_on_values()
+        # Reads data and formats it into array that is required for training and making predictions.
+        # Later the arrays are devided into two parts, one for training and second one for validating.
+        self.data, self.results = get_data('../breast_cancer_dataset.csv')
+        self.training_data, self.training_results, self.validation_data, self.validation_results = split_data(self.data, self.results)
 
-    # reads data from dataset, saves the result values and deletes first two columns
-    def get_data(self):
-        self.data_array = np.genfromtxt('../breast_cancer_dataset.csv', delimiter=',', 
-            dtype='float64, U1, float64, float64, float64, float64, float64, float64, float64, float64, float64, float64')
-        tmp = np.array([list(elem) for elem in self.data_array])
+        # Normalization of the dataset and saving the means and standard deviation values for later
+        self.training_data, self.means, self.stdevs = normalize_training(self.training_data)
+        self.validation_data = normalize(self.validation_data, self.means, self.stdevs)
 
-        tmp = np.delete(tmp, 0, 1)
-        self.results_array = tmp[:,0]
-        tmp = np.delete(tmp, 0, 1)
-        self.data_array = tmp.astype(np.float)
+        # Creates instance of the kNN class that operates with the classifier.
+        self.knn = kNN(self.training_data, self.training_results, self.validation_data, self.validation_results)
+        self.knn.train_on_values()
 
-    # splits data into two datasets, first part is intended for learning and second part is intended for validation
-    # and choosing the best k-value used in following functions
-    def split_data(self, training_size = 0.67):
-        training_length = math.ceil(len(self.data_array) * training_size)
-        for i in range(training_length):
-            self.training_data_array.append(self.data_array[i])
-            self.training_results_array.append(self.results_array[i])
-
-        for i in range(len(self.data_array) - training_length):
-            self.validation_data_array.append(self.data_array[i + training_length])
-            self.validation_results_array.append(self.results_array[i + training_length])
-
-        self.training_data_array = np.array(self.training_data_array)
-        self.training_results_array = np.array(self.training_results_array)
-        self.validation_data_array = np.array(self.validation_data_array)
-        self.validation_results_array = np.array(self.validation_results_array)
-
-    # finds the best k-value (gives the most precise results) from range [1,30]
-    def best_k(self):
-        accuracy = 0
-        k = 1
-
-        for i in range(1, 36):
-            classifier = KNeighborsClassifier(n_neighbors = i)
-            classifier.fit(self.training_data_array, self.training_results_array)
-            if classifier.score(self.validation_data_array, self.validation_results_array) > accuracy:
-                accuracy = classifier.score(self.validation_data_array, self.validation_results_array)
-                k = i
-                print(k, accuracy)
-
-        return k
-
-    # initializes the classifier and fits the training data
-    def train_on_values(self):
-        k = self.best_k()
-        self.main_classifier = KNeighborsClassifier(n_neighbors = k)
-        self.main_classifier.fit(self.training_data_array, self.training_results_array)
-
-    # predicts the result of entered data
+    # Predicts the result of entered data.
     def predict(self, entries):
+        # Creating the array for classifier that is used for making predictions.
         data = []
         for i in range(len(entries)):
             data.append(entries[i].get())
@@ -80,4 +35,6 @@ class App:
         data = data.reshape(1, -1)
         data = data.astype(np.float64)
 
-        return self.main_classifier.predict(data)
+        data = normalize(data, self.means, self.stdevs)
+
+        return self.knn.predict(data)

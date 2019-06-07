@@ -1,29 +1,29 @@
 from tkinter import *
 from tkinter import ttk
 
-# checks if string is float or not
+# Checks if string is float or not.
 def is_float(string):
     try:
-        return float(string)  # true if string is a number
+        return float(string) # true if string is a number
     except ValueError: # string is not a number
         return False
 
-# result of clicking the 'Calculate' button
+# Result of clicking the 'Calculate' button.
 def clicked(entries, lbl_result, app): # app is instance of App class from app.py
-    # checks if all entry fields contain data in the proper format
+    # Checks if all entry fields contain data in the proper format.
     for i in range(len(entries)):
         if not is_float(entries[i].get()):
             lbl_result.configure(text = 'Value \'' + app.data_columns[i] + '\' is not the right type.', fg = 'red')
             app.input_set = False
             return
 
-    # predicts the result based on learned data
+    # Predicts the result based on learned data.
     if app.predict(entries) == ['B']: # function predict() is from app.py
         lbl_result.configure(text = 'Cell is benign.', fg = 'RoyalBlue3')
     else:
         lbl_result.configure(text = 'Cell is malignant.', fg = 'RoyalBlue3')
 
-# sets the first tab, creates needed labels, text entries and button
+# Sets the first tab, creates needed labels, text entries and button.
 def set_first_tab(tab_control, tab1, app):
     entries = []
 
